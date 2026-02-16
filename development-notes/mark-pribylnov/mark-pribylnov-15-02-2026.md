@@ -80,6 +80,3 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v4 ```
 </details>
-
-Подумать в трелло из тикета по ивет лук раскидать как что делать
-````
