@@ -4,20 +4,19 @@
 .button {
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
   border: none;
   border-radius: v.$radius-lg;
   line-height: 1;
   cursor: pointer;
-  @include t.text-body(v.$color-retro-cream);
+  @include t.text-ui(v.$text-secondary-color);
 
   &_variant {
     &_primary {
-      background-color: v.$color-retro-black;
+      background-color: v.$color-black;
     }
 
     &_secondary {
-      background-color: v.$color-retro-red;
+      background-color: v.$color-red;
     }
   }
 
