@@ -12,6 +12,7 @@ A library of reusable, high-performance UI components for the TNDM project. Buil
   - [TndmCheckboxComponent](#tndmcheckboxcomponent)
 - [Action Components](#action-components)
   - [TndmButtonComponent](#tndmbuttoncomponent)
+  - [TndmToaster & ToastService](#tndmtoaster-&-toastservice)
 - [Shared Types](#shared-types)
 
 ---
@@ -210,10 +211,94 @@ To disable the button based on form status, bind the `isDisabled` property to th
 </tndm-button-component>
 ```
 
+---
+
+### TndmToaster & ToastService
+
+A global, signal-based notification system designed for stacking multiple alerts. Features automated lifecycle management (auto-dismiss).
+
+#### Visual States
+
+| State         | Success                                                       | Danger/Error                                            | Info                                                  | Warning                                                  |
+| :------------ | :------------------------------------------------------------ | :------------------------------------------------------ | :---------------------------------------------------- | :------------------------------------------------------- |
+| Default       | <img src="./docs/toaster/toast-success.png" width="200">      | <img src="./docs/toaster/toast-danger.png" width="200"> | <img src="./docs/toaster/toast-info.png" width="200"> | <img src="./docs/toaster/toast-warning.png" width="200"> |
+| Hover / Focus | <img src="./docs/toaster/toast-hover.png" width="200">        | — \|\| —                                                | — \|\| —                                              | — \|\| —                                                 |
+| Opened        | <img src="./docs/toaster/toast-opened.png" width="200">       | — \|\| —                                                | — \|\| —                                              | — \|\| —                                                 |
+| Without Icon  | <img src="./docs/toaster/toast-without-icon.png" width="200"> | — \|\| —                                                | — \|\| —                                              | — \|\| —                                                 |
+
+#### Component Features
+
+- **Accordion Logic:** Clicking a toast card expands the message. Clicking another card or anywhere outside the toaster automatically collapses the current message.
+- **Accessibility:** Supports keyboard navigation via Tab and expansion via the Enter key.
+- **Smart Scrolling:** Automatically scrolls to the newest toast using Angular effect and viewChild.
+- **Typography:** heading is automatically transformed to lowercase via CSS.
+
+#### Installation
+
+1. **Include the toaster component in your root layout** (e.g., `app.html`):
+
+```html
+<tndm-toast-component />
+```
+
+2. **Inject the ToastService into your component or service**
+
+```typescript
+export class MyComponent {
+  private toast = inject(ToastService);
+}
+```
+
+#### Usage
+
+**Basic Toasts**
+
+```typescript
+this.toast.success('Profile updated', 'Success');
+this.toast.danger('System failure', 'Critical Error');
+this.toast.info('New message received', '');
+```
+
+**Advanced Configuration**  
+_Pass a ToastOptions object to override default behavior:_
+
+```typescript
+this.toast.warning('Warning', 'Check the answer', {
+  duration: 2000,
+  icon: false,
+});
+```
+
+_To pass options without a message, you must provide an empty string as the second argument:_
+
+```typescript
+this.toast.warning('low battery', '', {
+  duration: 2000,
+  icon: false,
+});
+```
+
+#### API Reference
+
+**ToastService Methods**
+
+| Method      | Arguments                                                   | Description                        |
+| :---------- | :---------------------------------------------------------- | :--------------------------------- |
+| `success`   | `(title: string, message?: string, options?: ToastOptions)` | Displays a success (green) toast.  |
+| `danger`    | `(title: string, message?: string, options?: ToastOptions)` | Displays a danger (red) toast.     |
+| `info`      | `(title: string, message?: string, options?: ToastOptions)` | Displays an info (black) toast.    |
+| `warning``  | `(title: string, message?: string, options?: ToastOptions)` | Displays a warning (orange) toast. |
+| `remove`    | `(id: number)`                                              | Removes a specific toast by ID.    |
+| `removeAll` | —                                                           | Clears all active toasts.          |
+
+**ToastOptions:**
+
+| Option   | Type             | Default | Description                                               |
+| :------- | :--------------- | :------ | :-------------------------------------------------------- |
+| duration | `number \| null` | `5000`  | Time in ms before auto-dismissal. Set to null to disable. |
+| icon     | `boolean`        | `true`  | Show/hide the state-specific icon.                        |
+
 ## Shared Types
 
-**InputType:** `email | password | search | tel | text | url`
-
-**IconType:** `keyof typeof ICONS`
-
-(specific keys from the internal icon library)
+**InputType:** `email | password | search | tel | text | url`  
+**IconType:** `keyof typeof ICONS` (specific keys from the internal icon library)
